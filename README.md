@@ -1,2 +1,78 @@
 # couchmovies-couchbase
 Code for creating the Couchbase server component of the Couchmovies demo
+
+
+## Building a new couchmovies-couchbase image
+
+'Official' Couchbase Docker images on Docker Hub are designed to start as a clean node everytime they you use ```docker run``` This occurse becuase the Dockerfile used to define these images declares ```VOLUME /opt/couchbase/var```. The cluster configuration and any loaded datafiles are stored on this volume and are not included into the container image when it is saved using ```docker commit```.
+
+The goal is to get a Docker conatiner, runing a single Couchbase server node as its own cluster, preloaded with data. Trying to get this to work in a single Docker container is problematic, because the existing containers primary run thread is the server, and we need the server running in order to populate it. We considered/prototyped the following options to achieve this ...
+ 
+1. **Have all of the data loaded as part of the run script (e.g ```entrypoint.sh```) when the container is first run**
+
+  This option takes considerable time for the user to run when they first run the container. Many of the Couchbase CLI commands return asynchronously (before the change may be completely effected) the scripts require a lot of ```sleep``` command. Many failure conditions can occur and this method is unreliable for mass distribution.
+  
+2. **Have a specific container whose role is solely to populate the data**
+ 
+ This option has the benefit of making it easier to plug in a new 'stock' version of the Couchbase docker image, but has most of the problems of the previous solution. 
+ 
+3. **Convert the anonymous volume in the 'stock' Couchbase docker file to a named volume, and share the volume as well as the container**
+ 
+ By definition, changing the type of volume in the 'stock' image, means it is no longer the stock image.  And sharing the named volume adds additional complexity.
+ 
+4. **Remove the ```VOLUME``` statement from the 'stock' Couchbase Dockerfiles and pushlish 'demo' containers in Docker Hub**
+ 
+ This option is what was eventually chosen because it provided the simplest and most foolproof method for the end user to download and run.  Incidently, we did create an anonymous ```VOLUME``` statement in the new ```Dockerfile```, in order to create a temporary space (```/opt/demo/temp```) to load data zip files and build scripts that would not needed in the final demo image.
+
+
+
+Start by determining which version of Couchbase Server you wish to run. Look in the [couchbase-demo repository](https://github.com/escapedcanadian/couchbase-demo) for a branch that matches the version of Couchbase you want to use.  This branch identifier will be used as the ```<tag>``` in the following commands.
+
+If there is not a branch for the version you wish, create one, copying the ```Dockerfile``` and ```scripts``` directory from the [Couchbase Docker git repo](https://github.com/couchbase/docker/tree/master/enterprise/couchbase-server), for the verion you want. Currently, the only modification to ```Dockerfile``` is to replace the final line
+
+```
+VOLUME /opt/couchbase/var
+```
+with
+
+```
+VOLUME /opt/demo/temp
+```
+Then you must build your couchbase-demo version and push it to Docker Hub.
+
+
+
+### Pull and run a base demo docker image
+
+```
+pull docker escapedcanadian/couchbase-demo:<tag>
+docker run -d --name couchmovies_couchbase_build -p 8091-8096:8091-8096 -p 11210-11211:11210-11211 escapedcanadian/couchbase-demo:<tag>
+
+```
+### Run data population scripts
+```
+docker exec -it couchmovies_couchbase_build bash
+```
+```
+apt-get update --fix-missing
+apt-get -y  install git unzip
+git clone https://github.com/escapedcanadian/couchmovies-couchbase /opt/demo/temp/couchmovies
+
+
+cd /opt/demo/temp/couchmovies/build
+. .env
+./createCluster
+./loadData
+./createRBAC
+# Note: The following command will warn you that you are purging data. Answer "Yes".
+./resetTweets
+```  
+At this point, it is prudent to check that there are three populated buckets and all created indices are ready
+
+### Tag and push the image to the Docker repo
+```
+docker commit couchmovies-build escapedcanadian/couchmovies-couchbase:<tag>
+docker push escapedcanadian/couchmovies-couchbase:<tag>
+docker tag escapedcanadian/couchmovies-couchbase:<tag> escapedcanadian/couchmovies-couchbase:latest
+docker push escapedcanadian/couchmovies-couchbase:latest
+```
