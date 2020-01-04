@@ -1,6 +1,19 @@
 # couchmovies-couchbase
 Code for creating the Couchbase server component of the Couchmovies demo
 
+## Updating code
+### Updating tweet feeder
+The tweet feeder code is located in the ```feeder``` directory.
+If you change this code, it needs to be rebuilt with maven
+
+``` 
+mvn compile package
+```
+Once this completes, you need to copy the jar file into the top directory, since the target directory is not preserved by ```.gitignore```.
+
+```
+cp target/tweet-feeder-1.0.jar ../tweet-feeder.jar
+```
 
 ## Building a new couchmovies-couchbase image
 
@@ -76,15 +89,19 @@ Copy the tweet feeder files into the ```/opt/demo/feeder``` directory. This dir 
 
 ```
 mkdir -p /opt/demo/feeder
-cp /opt/demo/temp/couchmovies/build/feeder/target/tweet-feeder-1.0-SNAPSHOT.jar /opt/demo/feeder/tweet-feeder.jar
-cp /opt/demo/temp/couchmovies/build/feeder/startFeeder /opt/demo/feeder
+cp /opt/demo/temp/couchmovies/feeder/tweet-feeder.jar /opt/demo/feeder
+cp /opt/demo/temp/couchmovies/feeder/startFeeder /opt/demo/feeder
 cp /opt/demo/temp/couchmovies/build/firstTweet.sql /opt/demo/feeder
 cp /opt/demo/temp/couchmovies/build/resetTweets /opt/demo/feeder
 ```
 
 ### Tag and push the image to the Docker repo
+Make sure you exit from the container shell and/or run the following from shell on your laptop
+
 ```
-docker commit couchmovies-build escapedcanadian/couchmovies-couchbase:<tag>
+docker commit couchmovies_couchbase_build escapedcanadian/couchmovies-couchbase:<tag>
+docker stop couchmovies_couchbase_build
+docker container rm couchmovies_couchbase_build
 docker push escapedcanadian/couchmovies-couchbase:<tag>
 docker tag escapedcanadian/couchmovies-couchbase:<tag> escapedcanadian/couchmovies-couchbase:latest
 docker push escapedcanadian/couchmovies-couchbase:latest
