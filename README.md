@@ -69,6 +69,19 @@ cd /opt/demo/temp/couchmovies/build
 ```  
 At this point, it is prudent to check that there are three populated buckets and all created indices are ready
 
+### Copy the tweet feeder code
+The tweet feeder reads tweets from the tweetsource bucket and writes them (at a prescribed rate) into the tweettarget bucket.  This allows the analytics demo to demonstrate 'real-time analytics' on changing data.
+
+Copy the tweet feeder files into the ```/opt/demo/feeder``` directory. This dir is not part of the ```VOLUME``` and therefore will remain in the committed container.
+
+```
+mkdir -p /opt/demo/feeder
+cp /opt/demo/temp/couchmovies/build/feeder/target/tweet-feeder-1.0-SNAPSHOT.jar /opt/demo/feeder/tweet-feeder.jar
+cp /opt/demo/temp/couchmovies/build/feeder/startFeeder /opt/demo/feeder
+cp /opt/demo/temp/couchmovies/build/firstTweet.sql /opt/demo/feeder
+cp /opt/demo/temp/couchmovies/build/resetTweets /opt/demo/feeder
+```
+
 ### Tag and push the image to the Docker repo
 ```
 docker commit couchmovies-build escapedcanadian/couchmovies-couchbase:<tag>

@@ -1,0 +1,2 @@
+#!/bin/bash
+/opt/couchbase/lib/cbas/runtime/bin/java -jar /opt/demo/feeder/tweet-feeder.jar
