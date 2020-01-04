@@ -92,6 +92,7 @@ mkdir -p /opt/demo/feeder
 cp /opt/demo/temp/couchmovies/feeder/tweet-feeder.jar /opt/demo/feeder
 cp /opt/demo/temp/couchmovies/feeder/startFeeder /opt/demo/feeder
 cp /opt/demo/temp/couchmovies/build/firstTweet.sql /opt/demo/feeder
+cp /opt/demo/temp/couchmovies/build/.env /opt/demo/feeder
 cp /opt/demo/temp/couchmovies/build/resetTweets /opt/demo/feeder
 ```
 
