@@ -89,11 +89,12 @@ Copy the tweet feeder files into the ```/opt/demo/feeder``` directory. This dir 
 
 ```
 mkdir -p /opt/demo/feeder
-cp /opt/demo/temp/couchmovies/feeder/tweet-feeder.jar /opt/demo/feeder
-cp /opt/demo/temp/couchmovies/feeder/startFeeder /opt/demo/feeder
-cp /opt/demo/temp/couchmovies/build/firstTweet.sql /opt/demo/feeder
-cp /opt/demo/temp/couchmovies/build/.env /opt/demo/feeder
-cp /opt/demo/temp/couchmovies/build/resetTweets /opt/demo/feeder
+cp /opt/demo/temp/couchmovies/feeder/tweet-feeder.jar /
+cp /opt/demo/temp/couchmovies/feeder/startFeeder /
+cp /opt/demo/temp/couchmovies/build/firstTweet.sql /
+cp /opt/demo/temp/couchmovies/build/.env /
+cp /opt/demo/temp/couchmovies/build/resetTweets /
+echo "export PATH=$PATH:/" >> /root/.bashrc
 ```
 
 ### Tag and push the image to the Docker repo
