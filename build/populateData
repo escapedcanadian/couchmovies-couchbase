@@ -1,0 +1,8 @@
+#!/bin/bash
+. .env
+./createCluster
+./loadData
+./createRBAC
+cbq -e $CB_ENGINE -u $CB_USER -p $CB_PASSWORD -f firstTweet.sql
+echo "One tweet has been added to tweettarget so that Tableau dashboard will open and show a map"
+

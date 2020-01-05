@@ -1,0 +1,9 @@
+#!/bin/bash
+mkdir -p /opt/demo/feeder
+cp /opt/demo/temp/couchmovies/feeder/tweet-feeder.jar /
+cp /opt/demo/temp/couchmovies/feeder/startFeeder /
+cp /opt/demo/temp/couchmovies/build/firstTweet.sql /
+cp /opt/demo/temp/couchmovies/build/.env /
+cp /opt/demo/temp/couchmovies/build/resetTweets /
+echo "export PATH=$PATH:/" >> /root/.bashrc
+echo "Tweet feeder scripts installed in root directory"
