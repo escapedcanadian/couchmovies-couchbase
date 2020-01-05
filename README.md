@@ -82,13 +82,12 @@ docker exec -it couchmovies_couchbase_build bash
 Inside of the docker container shell, run the following ...
 
 ```
-apt-get update --fix-missing
-apt-get -y  install git unzip
+apt-get update && apt-get -y  install git unzip
 git clone https://github.com/escapedcanadian/couchmovies-couchbase /opt/demo/temp/couchmovies
 cd /opt/demo/temp/couchmovies/build
 ./populateData
 ```  
-At this point, it is prudent to check, using the admin UI on ```localhost:8091``` that there are three populated buckets and all created indices are ready. 
+At this point, ***it is important to wait for the indicies to complete building***. Use the admin UI on ```localhost:8091```. The credentials are Administrator:password
 
 ### Copy the tweet feeder code
 The tweet feeder reads tweets from the tweetsource bucket and writes them (at a prescribed rate) into the tweettarget bucket.  This allows the analytics demo to demonstrate 'real-time analytics' on changing data.
