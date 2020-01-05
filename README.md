@@ -1,5 +1,14 @@
 # couchmovies-couchbase
-Code for creating the Couchbase server component of the Couchmovies demo
+These instructions are for creating/modifying the Couchbase server image used for the Couchmovies demo.
+Demo users should not need to follow these instructions as pre-built Docker images should already exist.
+To run the demo, please clone the demo repo to your laptop and follow the instructions
+
+```
+git clone https://github.com/escapedcanadian/couchbase-demo 
+```
+
+**The remaining instructions in this file are only needed to modify/rebuild the Couchbase container for the demo.**
+
 
 ## Updating code
 ### Updating tweet feeder
@@ -16,6 +25,8 @@ cp target/tweet-feeder-1.0.jar ../tweet-feeder.jar
 ```
 
 ## Building a new couchmovies-couchbase image
+### couchbase-demo container
+***This section describes the reasons and process for building a demo container. You may be able to pull an existing one from [Docker hub](https://hub.docker.com/repository/docker/escapedcanadian/couchbase-demo).  If a suitable version exists, you may proceed with [building the demo image](#Pull-and-run-a-base-demo-docker-image)***
 
 'Official' Couchbase Docker images on Docker Hub are designed to start as a clean node everytime they you use ```docker run``` This occurse becuase the Dockerfile used to define these images declares ```VOLUME /opt/couchbase/var```. The cluster configuration and any loaded datafiles are stored on this volume and are not included into the container image when it is saved using ```docker commit```.
 
@@ -63,38 +74,30 @@ docker run -d --name couchmovies_couchbase_build -p 8091-8096:8091-8096 -p 11210
 
 ```
 ### Run data population scripts
+Open a shell in the docker container created above.
+
 ```
 docker exec -it couchmovies_couchbase_build bash
 ```
+Inside of the docker container shell, run the following ...
+
 ```
 apt-get update --fix-missing
 apt-get -y  install git unzip
 git clone https://github.com/escapedcanadian/couchmovies-couchbase /opt/demo/temp/couchmovies
-
-
 cd /opt/demo/temp/couchmovies/build
-. .env
-./createCluster
-./loadData
-./createRBAC
-# Note: The following command will warn you that you are purging data. Answer "Yes".
-./resetTweets
+./populateData
 ```  
-At this point, it is prudent to check that there are three populated buckets and all created indices are ready
+At this point, it is prudent to check, using the admin UI on ```localhost:8091``` that there are three populated buckets and all created indices are ready. 
 
 ### Copy the tweet feeder code
 The tweet feeder reads tweets from the tweetsource bucket and writes them (at a prescribed rate) into the tweettarget bucket.  This allows the analytics demo to demonstrate 'real-time analytics' on changing data.
 
-Copy the tweet feeder files into the ```/opt/demo/feeder``` directory. This dir is not part of the ```VOLUME``` and therefore will remain in the committed container.
+The following script will move reqiured scripts into the root directory of the docker container so that they can be easily run using the ```docker-compose exec``` command.
 
 ```
-mkdir -p /opt/demo/feeder
-cp /opt/demo/temp/couchmovies/feeder/tweet-feeder.jar /
-cp /opt/demo/temp/couchmovies/feeder/startFeeder /
-cp /opt/demo/temp/couchmovies/build/firstTweet.sql /
-cp /opt/demo/temp/couchmovies/build/.env /
-cp /opt/demo/temp/couchmovies/build/resetTweets /
-echo "export PATH=$PATH:/" >> /root/.bashrc
+cd /opt/demo/temp/couchmovies/feeder
+./installForDocker
 ```
 
 ### Tag and push the image to the Docker repo
