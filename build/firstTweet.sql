@@ -4,8 +4,9 @@ INSERT INTO `tweettarget` (KEY, VALUE) VALUES ("tweet::1160104690702400000", {
   "followingCount": 121,
   "isRetweet": true,
   "language": "English",
-  "latitude": 12.9617702,
-  "longitude": 80.1958012,
+  "geo": {
+    "lat": 12.9617702,
+    "lon": 80.1958012 },
   "retweetCount": 457,
   "source": "Android",
   "totalTweets": 1608,

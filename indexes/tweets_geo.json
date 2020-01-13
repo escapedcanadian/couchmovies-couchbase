@@ -1,0 +1,80 @@
+{
+    "name": "tweets_geo",
+    "type": "fulltext-index",
+    "params": {
+     "doc_config": {
+      "docid_prefix_delim": ":",
+      "docid_regexp": "",
+      "mode": "docid_prefix",
+      "type_field": "type"
+     },
+     "mapping": {
+      "default_analyzer": "standard",
+      "default_datetime_parser": "dateTimeOptional",
+      "default_field": "_all",
+      "default_mapping": {
+       "dynamic": true,
+       "enabled": true,
+       "properties": {
+        "geo": {
+         "enabled": true,
+         "dynamic": false,
+         "fields": [
+          {
+           "docvalues": true,
+           "include_term_vectors": true,
+           "index": true,
+           "name": "geo",
+           "store": true,
+           "type": "geopoint"
+          }
+         ]
+        },
+        "tweet": {
+         "enabled": true,
+         "dynamic": false,
+         "fields": [
+          {
+           "docvalues": true,
+           "include_term_vectors": true,
+           "index": true,
+           "name": "tweet",
+           "store": true,
+           "type": "text"
+          }
+         ]
+        },
+        "username": {
+         "enabled": true,
+         "dynamic": false,
+         "fields": [
+          {
+           "docvalues": true,
+           "index": true,
+           "name": "username",
+           "store": true,
+           "type": "text"
+          }
+         ]
+        }
+       }
+      },
+      "default_type": "_default",
+      "docvalues_dynamic": true,
+      "index_dynamic": true,
+      "store_dynamic": false,
+      "type_field": "_type"
+     },
+     "store": {
+      "indexType": "scorch"
+     }
+    },
+    "sourceType": "couchbase",
+    "sourceName": "tweetsource",
+    "sourceParams": {},
+    "planParams": {
+     "maxPartitionsPerPIndex": 171,
+     "indexPartitions": 6,
+     "numReplicas": 0
+    }
+   }
