@@ -94,6 +94,8 @@ The tweet feeder reads tweets from the tweetsource bucket and writes them (at a 
 
 The following script will move reqiured scripts into the root directory of the docker container so that they can be easily run using the ```docker-compose exec``` command.
 
+Inside of the docker shell openned above, run ...
+
 ```
 cd /opt/demo/temp/couchmovies/feeder
 ./installForDocker
@@ -106,7 +108,7 @@ Make sure you exit from the container shell and/or run the following from shell 
 docker commit couchmovies_couchbase_build escapedcanadian/couchmovies-couchbase:<tag>
 docker stop couchmovies_couchbase_build
 docker container rm couchmovies_couchbase_build
-docker push escapedcanadian/couchmovies-couchbase:<tag>
 docker tag escapedcanadian/couchmovies-couchbase:<tag> escapedcanadian/couchmovies-couchbase:latest
+docker push escapedcanadian/couchmovies-couchbase:<tag>
 docker push escapedcanadian/couchmovies-couchbase:latest
 ```
