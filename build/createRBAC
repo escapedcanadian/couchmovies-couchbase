@@ -4,11 +4,7 @@ couchbase-cli user-manage -c 127.0.0.1:8091 -u Administrator \
  --auth-domain local
 
 couchbase-cli user-manage -c 127.0.0.1:8091 -u Administrator \
- -p password --set --rbac-username tweetsource --rbac-password password \
- --rbac-name "tweetsource" --roles query_select[tweetsource],data_reader[tweetsource]\
+ -p password --set --rbac-username tweetfeeder --rbac-password password \
+ --rbac-name "tweetsource" --roles query_select[tweetsource],data_reader[tweetsource],data_writer[tweettarget]\
  --auth-domain local
 
-couchbase-cli user-manage -c 127.0.0.1:8091 -u Administrator \
- -p password --set --rbac-username tweettarget --rbac-password password \
- --rbac-name "tweettarget" --roles data_writer[tweettarget] \
- --auth-domain local

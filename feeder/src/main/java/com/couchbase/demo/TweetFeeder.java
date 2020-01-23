@@ -34,10 +34,16 @@ public final class TweetFeeder {
 
         Cluster cluster = CouchbaseCluster.create("127.0.0.1");
         try {
-            Bucket sourceBucket = cluster.openBucket("tweetsource", "password");
-            System.out.println("Connected to tweetsource bucket");
-            Bucket targetBucket = cluster.openBucket("tweettarget", "password");
-            System.out.println("Connected to tweettarget bucket");
+            // Bucket sourceBucket = cluster.openBucket("tweetsource", "password");
+            // System.out.println("Connected to tweetsource bucket");
+            // Bucket targetBucket = cluster.openBucket("tweettarget", "password");
+            // System.out.println("Connected to tweettarget bucket");
+
+        // Initialize the Connection
+    
+            cluster.authenticate("tweetfeeder", "password");
+            Bucket sourceBucket = cluster.openBucket("tweetsource");
+            Bucket targetBucket = cluster.openBucket("tweettarget");
 
             N1qlQuery sourceQuery = N1qlQuery.simple("SELECT * from `tweetsource` where geo is not null LIMIT 1000");
             N1qlQueryResult sourceResults = sourceBucket.query(sourceQuery);
