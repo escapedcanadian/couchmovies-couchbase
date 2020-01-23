@@ -39,7 +39,7 @@ public final class TweetFeeder {
             Bucket targetBucket = cluster.openBucket("tweettarget", "password");
             System.out.println("Connected to tweettarget bucket");
 
-            N1qlQuery sourceQuery = N1qlQuery.simple("SELECT * from `tweetsource` where latitude is not null LIMIT 1000");
+            N1qlQuery sourceQuery = N1qlQuery.simple("SELECT * from `tweetsource` where geo is not null LIMIT 1000");
             N1qlQueryResult sourceResults = sourceBucket.query(sourceQuery);
 
             System.out.println("Requested source data. Success: " + sourceResults.finalSuccess() + " Row count:" + sourceResults.info().resultCount());
