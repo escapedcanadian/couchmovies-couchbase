@@ -12,8 +12,8 @@ cbexport json -c $CB_ENGINE -u $CB_USER -p $CB_PASSWORD --bucket $CB_TWEET_SOURC
 zip tweetsource.zip tweetsource.json
 rm tweetsource.json
 echo "Exporting FTS indices"
-curl -XGET -H "Content-type:application/json" http://$CB_USER:$CB_PASSWORD@127.0.0.1:8094/api/index/movies_autocomplete | jq .indexDef > $DEMO_DIR/indexes/movies_autocomplete.json
-curl -XGET -H "Content-type:application/json" http://$CB_USER:$CB_PASSWORD@127.0.0.1:8094/api/index/movies_shingle | jq .indexDef > $DEMO_DIR/indexes/movies_shingle.json
+curl -XGET -H "Content-type:application/json" http://$CB_USER:$CB_PASSWORD@$CB_SERVER:$CB_QUERY_PORT/api/index/movies_autocomplete | jq .indexDef > $DEMO_DIR/indexes/movies_autocomplete.json
+curl -XGET -H "Content-type:application/json" http://$CB_USER:$CB_PASSWORD@$CB_SERVER:$CB_QUERY_PORT/api/index/movies_shingle | jq .indexDef > $DEMO_DIR/indexes/movies_shingle.json
 
 cd $STARTED
 echo "Export complete"

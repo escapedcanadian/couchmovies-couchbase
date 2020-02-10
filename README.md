@@ -24,7 +24,7 @@ Once this completes, you need to copy the jar file into the top directory, since
 cp target/tweet-feeder-1.0.jar ../tweet-feeder.jar
 ```
 
-## Building a new couchmovies-couchbase image
+## Building a new couchmovies-couchbase container
 ### couchbase-demo container
 ***This section describes the reasons and process for building a demo container. You may be able to pull an existing one from [Docker hub](https://hub.docker.com/repository/docker/escapedcanadian/couchbase-demo).  If a suitable version exists, you may proceed with [building the demo image](#Pull-and-run-a-base-demo-docker-image)***
 

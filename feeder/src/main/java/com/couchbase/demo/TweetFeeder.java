@@ -32,7 +32,7 @@ public final class TweetFeeder {
 
         System.out.println("Starting Demo Tweet Feeder");
 
-        Cluster cluster = CouchbaseCluster.create("127.0.0.1");
+        Cluster cluster = CouchbaseCluster.create("127.0.0.1:8090");
         try {
             // Bucket sourceBucket = cluster.openBucket("tweetsource", "password");
             // System.out.println("Connected to tweetsource bucket");

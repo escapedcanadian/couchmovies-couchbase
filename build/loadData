@@ -31,6 +31,6 @@ cbq -e $CB_ENGINE -u $CB_USER -p $CB_PASSWORD --script 'BUILD INDEX ON moviedata
 
 
 echo "Creating FTS indices"
-curl -XPUT -H "Content-type:application/json" http://$CB_USER:$CB_PASSWORD@127.0.0.1:8094/api/index/movies_shingle -d @$DEMO_DIR/indexes/movies_shingle.json
-curl -XPUT -H "Content-type:application/json" http://$CB_USER:$CB_PASSWORD@127.0.0.1:8094/api/index/movies_autocomplete -d @$DEMO_DIR/indexes/movies_autocomplete.json
-curl -XPUT -H "Content-type:application/json" http://$CB_USER:$CB_PASSWORD@127.0.0.1:8094/api/index/tweets_geo -d @$DEMO_DIR/indexes/tweets_geo.json
+curl -XPUT -H "Content-type:application/json" http://$CB_USER:$CB_PASSWORD@$CB_SERVER:$CB_QUERY_PORT/api/index/movies_shingle -d @$DEMO_DIR/indexes/movies_shingle.json
+curl -XPUT -H "Content-type:application/json" http://$CB_USER:$CB_PASSWORD@$CB_SERVER:$CB_QUERY_PORT/api/index/movies_autocomplete -d @$DEMO_DIR/indexes/movies_autocomplete.json
+curl -XPUT -H "Content-type:application/json" http://$CB_USER:$CB_PASSWORD@$CB_SERVER:$CB_QUERY_PORT/api/index/tweets_geo -d @$DEMO_DIR/indexes/tweets_geo.json
